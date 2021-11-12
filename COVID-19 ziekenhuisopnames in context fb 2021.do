@@ -31,13 +31,13 @@ percentageziekenhuisopnameper - let op, dit percentage is in gebruikt voor een i
 * NB date is de start van de week!
 */
 clear
-import excel "C:\Users\bsiegerink\Desktop\huisarts en wetenschap COVID-19\COVID19_admission_in_context\COVID-19 RIVM.xlsx", sheet("Sheet1") firstrow
+import excel "C:\Users\bsiegerink\OneDrive - LUMC\huisarts en wetenschap COVID-19\COVID19_admission_in_context\COVID-19 RIVM.xlsx", sheet("Sheet1") firstrow
 rename *, lower
 
 format week %tdDDmon
 rename week date
 
-save "C:\Users\bsiegerink\Desktop\huisarts en wetenschap COVID-19\COVID19_admission_in_context\rivm epidemiologisch rapport.dta", replace 
+save "C:\Users\bsiegerink\OneDrive - LUMC\huisarts en wetenschap COVID-19\COVID19_admission_in_context\rivm epidemiologisch rapport.dta", replace 
 
 /** data van LCPS voor ziekenhuisbesmettingen
 bron https://lcps.nu/wp-content/uploads/covid-19-datafeed.csv, datum 11/11/2021
@@ -52,7 +52,7 @@ Datum: Datum waarop de beddenbezetting is vastgesteld (geschreven in de volgende
 */
 
 clear all
-import delimited "C:\Users\bsiegerink\Desktop\huisarts en wetenschap COVID-19\COVID19_admission_in_context\covid-19 lcps.csv", varnames(1) clear 
+import delimited "C:\Users\bsiegerink\OneDrive - LUMC\huisarts en wetenschap COVID-19\COVID19_admission_in_context\covid-19 lcps.csv", varnames(1) clear 
 
 gen date = date(datum, "DMY")
 format date %tdDDmon
@@ -63,7 +63,7 @@ sort date
 destring(ic_bedden_covid ic_bedden_non_covid kliniek_bedden ic_nieuwe_opnames_covid kliniek_nieuwe_opnames_covid), force replace
 
 
-merge 1:1 date using "C:\Users\bsiegerink\Desktop\huisarts en wetenschap COVID-19\COVID19_admission_in_context\rivm epidemiologisch rapport.dta"
+merge 1:1 date using "C:\Users\bsiegerink\OneDrive - LUMC\huisarts en wetenschap COVID-19\COVID19_admission_in_context\rivm epidemiologisch rapport.dta"
 
 
 *totaalbezetting met COVID bedden.
@@ -106,5 +106,5 @@ twoway  (scatter perc date, yaxis(1) mcol(navy*2) msymbol(0)) ///
 		
 		graph export "C:\Users\bsiegerink\Desktop\huisarts en wetenschap COVID-19\COVID-19 ziekenhuisopnames in context.pdf", replace
 		
-		export delimited "C:\Users\bsiegerink\Desktop\huisarts en wetenschap COVID-19\COVID-19 ziekenhuisopnames in context feb 2021 analyse file.csv", replace
+		export delimited "C:\Users\bsiegerink\OneDrive - LUMC\huisarts en wetenschap COVID-19\COVID-19 ziekenhuisopnames in context feb 2021 analyse file.csv", replace
 		
