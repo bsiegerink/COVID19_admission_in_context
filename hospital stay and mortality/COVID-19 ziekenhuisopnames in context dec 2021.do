@@ -16,7 +16,7 @@ The following code relies fully on Github repo's  from M van Zelst. The rest of 
 
 clear all
 
-cd "C:\Users\bsiegerink\OneDrive - LUMC\huisarts en wetenschap COVID-19\COVID19_admission_in_context\"
+cd "C:\Users\bsiegerink\OneDrive - LUMC\huisarts en wetenschap COVID-19\COVID19_admission_in_context\hospital stay and mortality"
 set more off, perm
 set scheme plotplain, perm
 set seed 1988
@@ -188,7 +188,7 @@ graph combine A B, xcommon row(2) ysize(7) xsize(9) ///
 title("COVID-19 instroom, ligduur en mortaliteit in het ziekenhuis") ///
 caption("data van NICE, dagelijkse cijfers, 7 daags gemiddelde, zie https://osf.io/5vjgn/ voor meer details, data en code" , size(tiny)) 
 
-graph export "COVID-19, fase 2D korte ligduur en hoge mortaliteit.pdf"
+graph export "C:\Users\bsiegerink\OneDrive - LUMC\huisarts en wetenschap COVID-19\COVID19_admission_in_context\hospital stay and mortality\COVID-19, fase 2D korte ligduur en hoge mortaliteit.pdf"
 
 
 
