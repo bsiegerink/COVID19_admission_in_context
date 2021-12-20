@@ -69,7 +69,7 @@ probleem met deze data is dat ontslagen van IC, ook ontslagen naar afdeling kan 
 */
 
 *get the outgoing
-import delimited "https://raw.githubusercontent.com/mzelst/covid-19/master/data-nice/exit/Clinical_Beds/nice_daily_exit_clinical_2021-12-16.csv", clear
+import delimited "https://raw.githubusercontent.com/mzelst/covid-19/master/data-nice/exit/Clinical_Beds/nice_daily_exit_clinical_2021-12-19.csv", clear
 gen outgoing = 	 overleden_pdag + ontslagen_pdag
 
 * name and rename date variables
@@ -186,9 +186,9 @@ twoway 	(line average_hosp_stay_perday  	date if date> mdy(04, 01, 2020) , yaxis
 		
 graph combine A B, xcommon row(2) ysize(7) xsize(9) ///
 title("COVID-19 instroom, ligduur en mortaliteit in het ziekenhuis") ///
-caption("data van NICE, dagelijkse cijfers, 7 daags gemiddelde, zie https://osf.io/5vjgn/ voor meer details, data en code" , size(tiny)) 
+caption("data van NICE, dagelijkse cijfers, 7 daags gemiddelde, zie https://osf.io/5vjgn/ voor meer details, data en code." , size(tiny)) 
 
-graph export "C:\Users\bsiegerink\OneDrive - LUMC\huisarts en wetenschap COVID-19\COVID19_admission_in_context\hospital stay and mortality\COVID-19, fase 2D korte ligduur en hoge mortaliteit.pdf"
+graph export "C:\Users\bsiegerink\OneDrive - LUMC\huisarts en wetenschap COVID-19\COVID19_admission_in_context\hospital stay and mortality\COVID-19, fase 2D korte ligduur en hoge mortaliteit.pdf", replace
 
 
 
