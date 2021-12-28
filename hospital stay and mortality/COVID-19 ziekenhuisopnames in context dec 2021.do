@@ -124,6 +124,26 @@ sum average_hosp_stay_perday
 hist average_hosp_stay_perday if average_hosp_stay_perday <15
 */
 
+
+// What is the average stay in days when based on weekly incidences?
+/*
+gen weekly_incidence =  ///
+(outgoing[_n]+outgoing[_n-1]+outgoing[_n-2]+outgoing[_n-3]+outgoing[_n-4]+outgoing[_n-5]+outgoing[_n-6] ) / ///
+(total_beds_currently[_n-7] ///
+- ((0.5*outgoing[_n]+ 0.5*outgoing[_n-1] + 0.5*outgoing[_n-2]+ 0.5*outgoing[_n-3]+ 0.5*outgoing[_n-4] + 0.5*outgoing[_n-5]+ 0.5*outgoing[_n-6]  )) ///
++ ((0.5*incoming[_n]+ 0.5*incoming[_n-1] + 0.5*incoming[_n-2]+ 0.5*incoming[_n-3]+ 0.5*incoming[_n-4] + 0.5*incoming[_n-5]+ 0.5*incoming[_n-6])))
+
+gen weekly_based_hospital_stay= (1/weekly_incidence)*7
+
+twoway scatter weekly_based_hospital_stay average_hosp_stay_perda
+gen check = weekly_based_hospital_stay-average_hosp_stay_perday 
+
+twoway (line average_hosp_stay_perday  	date if date> mdy(04, 01, 2020)) ///
+       (line weekly_based_hospital_stay date if date> mdy(04, 01, 2020))
+	   
+// This approach will be mentioned in the methods section, but we chose to use the latter approach for uniformity of methods. 
+*/
+
 // make variable for casemix
 gen casemix =  (ic_current /  (hospital_currently+ic_current))*100
 gen running_average_casemix=  ///
@@ -138,11 +158,10 @@ casemix[_n-6])/7
 
 save 4, replace 
 
-
 *_______________________________________________________________________________
-* nieuw figuur
+* figuur
 *_______________________________________________________________________________
-drop if _n>_N-4
+/*drop if _n>_N-4
 twoway	(line  running_average_incoming 	date , yaxis(1) lcol(red*1.3)   lw(*1.5) lpat(solid)) ///
 		(line  running_average_total_beds   date , yaxis(2) lcol(green*1.3) lw(*1.5) lpat(solid)) ///
 	  	(line  running_average_casemix  	date , yaxis(3) lcol(black*0.7) lw(*1.5) lpat(solid)) ///
@@ -165,7 +184,7 @@ twoway	(line  running_average_incoming 	date , yaxis(1) lcol(red*1.3)   lw(*1.5)
 		
 twoway 	(line average_hosp_stay_perday  	date if date> mdy(04, 01, 2020) , yaxis(1) lcol(gold)      lw(*1.5) lpat(solid)) ///
 		(line running_average_death_perc	date , yaxis(2) lcol(blue*1.3)  lw(*1.5) lpat(solid)) ///
-		(line running_average_casemix  		date , yaxis(3) lcol(black*0.7) lw(*1.5) lpat(solid)) ///
+		(line  running_average_casemix  	date , yaxis(3) lcol(black*0.7) lw(*1.5) lpat(solid)) ///
 		, ///
 		yscale(axis(1)) ///
 		ylabel(5(5)25, axis(1) angle(90)) ///
@@ -174,7 +193,7 @@ twoway 	(line average_hosp_stay_perday  	date if date> mdy(04, 01, 2020) , yaxis
 		ylabel(0(0.5)2.5, axis(2) angle(90)) ///
 		ytitle("dagelijkse ziekenhuismortaliteit, %", axis(2) color(blue*1.3) size(small)) /// 
 		yscale(axis(3) alt) ///		
-		ylabel(0(15)60, axis(3) angle(90)) ///
+		ylabel(0(15)65, axis(3) angle(90)) ///
 		ytitle("casemix, % ICU bedden van totaal", axis(3) color(black*1.3) size(small)) ///
 		legend(off) ///
 		xsize(9) ///	
@@ -183,15 +202,47 @@ twoway 	(line average_hosp_stay_perday  	date if date> mdy(04, 01, 2020) , yaxis
 		title("{bf:B: ligduur en ziekenhuismortaliteit}", justification(left) span bexpand nobox margin(3 3 3 3)) ///
 		name(B, replace)
 
-		
 graph combine A B, xcommon row(2) ysize(7) xsize(9) ///
-title("COVID-19 instroom, ligduur en mortaliteit in het ziekenhuis") ///
-caption("data van NICE, dagelijkse cijfers, 7 daags gemiddelde, zie https://osf.io/5vjgn/ voor meer details, data en code." , size(tiny)) 
-
 graph export "C:\Users\bsiegerink\OneDrive - LUMC\huisarts en wetenschap COVID-19\COVID19_admission_in_context\hospital stay and mortality\COVID-19, fase 2D korte ligduur en hoge mortaliteit.pdf", replace
-
-
-
+*/
+*_______________________________________________________________________________
+* nieuw figuur en data export voor rebuttal NTVG
+*_______________________________________________________________________________
+drop if _n>_N-4
+ 
+ export excel running_average_total_beds running_average_incoming average_hosp_stay_perday running_average_death_perc running_average_casemix using "C:\Users\bsiegerink\OneDrive - LUMC\huisarts en wetenschap COVID-19\COVID19_admission_in_context\hospital stay and mortality\file for NTVG submission.xls", firstrow(variables) replace
+ 
+twoway 	(area  running_average_total_beds   date , yaxis(1) col(blue*0.3) lw(*0.5) lpat(solid)) ///
+	  	(line average_hosp_stay_perday  	date if date> mdy(04, 01, 2020) , yaxis(2) lcol(red*0.5) lw(*1.5) lpat(solid)) ///
+		(line running_average_death_perc	date , yaxis(3) lcol(blue*1.7)  lw(*1.5) lpat(solid)) ///
+		(line  running_average_casemix  	date , yaxis(4) lcol(red*2.7) lw(*1.5) lpat(solid)) ///
+		, ///
+		yscale(axis(2) alt) ///
+		ylabel(0(5)30, axis(2) angle(90)) ///
+		ytitle("gemiddelde ligduur (in dagen)", axis(2) color(red*0.5) size(small)  ) ///
+		///
+		yscale(axis(3)) ///
+		ylabel(0.0(0.5)3, axis(3) angle(90)) ///
+		ytitle("dagelijkse ziekenhuismortaliteit, %", axis(3) color(blue*1.7) size(small)) /// 
+		///
+		yscale(axis(4) alt ) ///		
+		ylabel(0(10)60, axis(4) angle(90)) ///
+		ytitle("casemix, % ICU bedden van totaal", axis(4) color(red*2.7) size(small)) ///
+		///
+		yscale(axis(1)) ///
+		ylabel(0(750)4500, axis(1) angle(90) gmax) ///
+		ytitle("totaal bezette COVID-19 bedden (gearceerd)", axis(1) color(blue*0.5) size(small)) ///
+		///
+		legend(off) ///
+		xsize(9) ///	
+		xlabel(#10) ///
+		xtitle("") ///
+		title("dagelijkse COVID-19 bedden bezetting, mortaliteit, ligduur en aandeel IC") ///
+		caption("gebdasseerd op data van NICE en LCPS, dagelijkse cijfers, 7 daags gemiddelde, zie online versie voor methoden en technieken. Raadpleeg https://osf.io/5vjgn/ voor data en code " ///
+		"en https://osf.io/egqa6/ voor een update van deze grafiek." , size(vsmall)) ///
+		name(B, replace)
+		
+graph export "C:\Users\bsiegerink\OneDrive - LUMC\huisarts en wetenschap COVID-19\COVID19_admission_in_context\hospital stay and mortality\COVID-19, fase 2D korte ligduur en hoge mortaliteit - ntvg rebuttal.pdf", replace
 
 
 

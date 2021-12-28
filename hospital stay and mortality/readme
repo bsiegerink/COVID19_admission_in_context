@@ -1,14 +1,14 @@
-Methods for hospital stay and in hopsital mortality, https://osf.io/5vjgn/
+Methods for hospital stay and in hospital mortality, https://osf.io/5vjgn/
 
 // all data used are from NICE, obtained through github repos van Zelst https://github.com/mzelst.
 // we combine data from ICU and non ICU, we provide casemic information to keep this part of the interpretation. 
 // we show new beds, which means new ward and ICU, even though ICU come from wards.
 // we show total beds occupied are the beds of IC and non IC.
 // we calcuate the average hospital stay for those who were dicharged or deceased that day.
-// we plot these daya not for the first couple of days of the pandemic forrgaphic reasons.
+// we plot these data not for the first couple of days of the pandemic for graphic reasons.
 // we calculate the mortality as a percetnage by taking those who decesed as a percentage of the total number of beds the day before.
 // we smooth all lines by making a running average with a 7 day window.
-// we do not perform statisical inferences for somplicity sake.
+// we do not perform statisical inferences for simplicity sake.
 
 
 for quations, please contact b.siegerink@lumc.nl, orcid id  0000-0002-8454-9142. 
