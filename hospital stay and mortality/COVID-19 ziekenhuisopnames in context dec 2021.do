@@ -207,10 +207,11 @@ graph export "C:\Users\bsiegerink\OneDrive - LUMC\huisarts en wetenschap COVID-1
 */
 *_______________________________________________________________________________
 * nieuw figuur en data export voor rebuttal NTVG
+* always drop most recent 4 days , as data is not complete.
 *_______________________________________________________________________________
 drop if _n>_N-4
  
- export excel running_average_total_beds running_average_incoming average_hosp_stay_perday running_average_death_perc running_average_casemix using "C:\Users\bsiegerink\OneDrive - LUMC\huisarts en wetenschap COVID-19\COVID19_admission_in_context\hospital stay and mortality\file for NTVG submission.xls", firstrow(variables) replace
+export excel date running_average_total_beds running_average_incoming average_hosp_stay_perday running_average_death_perc running_average_casemix using "C:\Users\bsiegerink\OneDrive - LUMC\huisarts en wetenschap COVID-19\COVID19_admission_in_context\hospital stay and mortality\file for NTVG submission.xls", firstrow(variables) replace
  
 twoway 	(area  running_average_total_beds   date , yaxis(1) col(blue*0.3) lw(*0.5) lpat(solid)) ///
 	  	(line average_hosp_stay_perday  	date if date> mdy(04, 01, 2020) , yaxis(2) lcol(red*0.5) lw(*1.5) lpat(solid)) ///
