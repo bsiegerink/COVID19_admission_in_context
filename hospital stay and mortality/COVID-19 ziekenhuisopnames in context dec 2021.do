@@ -69,7 +69,7 @@ probleem met deze data is dat ontslagen van IC, ook ontslagen naar afdeling kan 
 */
 
 *get the outgoing
-import delimited "https://raw.githubusercontent.com/mzelst/covid-19/master/data-nice/exit/Clinical_Beds/nice_daily_exit_clinical_2022-01-31.csv", clear
+import delimited "https://raw.githubusercontent.com/mzelst/covid-19/master/data-nice/exit/Clinical_Beds/nice_daily_exit_clinical_2022-02-14.csv", clear
 gen outgoing = 	 overleden_pdag + ontslagen_pdag
 
 * name and rename date variables
